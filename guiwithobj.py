@@ -1,8 +1,18 @@
 from tkinter import *
-
+from tkinter import messagebox
 
 def msg():
     print("LEFT Click Me")
+    s="10"
+    #messagebox.showerror("Greeting","Good Day="+s)
+    res=messagebox.askyesno("Question","Are U a Programmer?")
+    print(res)
+    if res==True:
+        print("thank You")
+    else:
+        print("this is not for you")
+
+
 class MyGui:
 
     def __init__(self,master):
