@@ -10,7 +10,7 @@ root.wm_iconbitmap("note.ico")   #to add icon
 mainMenu=Menu(root)
 root.config(menu=mainMenu)
 
-fileMenu=Menu(mainMenu)
+fileMenu=Menu(mainMenu,tearoff=False)
 mainMenu.add_cascade(label="File",menu=fileMenu)
 fileMenu.add_command(label="New",command=msg,accelerator="Ctrl+N")
 fileMenu.add_separator()

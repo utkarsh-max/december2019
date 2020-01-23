@@ -16,6 +16,7 @@ def msg():
 class MyGui:
 
     def __init__(self,master):
+        self.master=master
         self.btn=Button(master,text="Right Click Me",fg="red",bg="yellow",
             font=("Ariel",12,'bold'),command=msg)
         self.btn.pack()
