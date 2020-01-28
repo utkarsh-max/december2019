@@ -4,7 +4,8 @@ from tkinter import ttk
 import pymysql
 from  datetime import datetime
 taz=Tk()
-
+########### main treeview #################
+tazTV = ttk.Treeview(height=10, columns=('Item Name''Rate','Type'))
 ############# validation ######################
 def only_numeric_input(P):
     # checks if entry's value is an integer or empty and returns an appropriate boolean
@@ -45,6 +46,29 @@ def additem():
     itemnameVar.set("")
     itemrateVar.set("")
     itemTypeVar.set("")
+    # to fetch data in treeview
+    getItemInTreeView()
+############ get Item in tree view ###############
+def getItemInTreeView():
+    # to delete already inserted item
+    records = tazTV.get_children()
+
+    for element in records:
+        tazTV.delete(element)
+
+    # insert data in treeview
+    conn = pymysql.connect(host="localhost", user="root", db="wahtaz")
+    mycursor = conn.cursor(pymysql.cursors.DictCursor)
+    print(mycursor)
+    query = "select * from itemlist"
+    mycursor.execute(query)
+    data = mycursor.fetchall()
+    print(data)
+
+    for row in data:
+        tazTV.insert('', 'end', text=row['item_name'], values=(row["item_rate"], row["item_type"]))
+
+    conn.close()
 #######################################
 itemnameVar=StringVar()
 itemrateVar=StringVar()
@@ -88,6 +112,24 @@ def additemwindow():
 
     additemButton = Button(taz, text="Add Item", width=20, height=2, fg="green", bd=10, command=additem)
     additemButton.grid(row=5, column=2, columnspan=1)
+
+    label = Label(taz)
+    label.grid(row=6, column=2, padx=20, pady=5)
+    ###############################################
+    tazTV.grid(row=7, column=0, columnspan=3)
+    style = ttk.Style(taz)
+    style.theme_use('clam')
+    style.configure("Treeview", fieldbackground="green")
+    scrollBar = Scrollbar(taz, orient="vertical", command=tazTV.yview)
+    scrollBar.grid(row=7, column=2, sticky="NSE")
+
+    tazTV.configure(yscrollcommand=scrollBar.set)
+
+    tazTV.heading('#0', text="Item Name")
+    tazTV.heading('#1', text="Rate")
+    tazTV.heading('#2', text="Type")
+    # to fetch data in treeview
+    getItemInTreeView()
 #########################remove all widgets from screen #################
 
 def remove_all_widgets():
