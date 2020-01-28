@@ -19,7 +19,75 @@ def only_char_input(P):
     return False
 callback = taz.register(only_char_input)  # registers a Tcl to Python callback
 callback1 = taz.register(only_numeric_input)  # registers a Tcl to Python callback
-############# def logout ########################
+############# bill generation ########################
+def billgenerationwindow():
+    pass
+#############################
+############## back buttton #####################
+
+def backbutton():
+    remove_all_widgets()
+    mainheading()
+    welcomewindow()
+########## add item ################
+
+def additem():
+    name = itemnameVar.get()
+    rate = itemrateVar.get()
+    type = itemTypeVar.get()
+    print(name, rate, type)
+    dbconfig()
+    query = "insert into itemlist (item_name,item_rate,item_type) values(%s,%s,%s);"
+    val = (name, rate, type)
+    mycursor.execute(query, val)
+    conn.commit()
+    messagebox.showinfo("Save Data", 'Item Inserted Successfully')
+    itemnameVar.set("")
+    itemrateVar.set("")
+    itemTypeVar.set("")
+#######################################
+itemnameVar=StringVar()
+itemrateVar=StringVar()
+itemTypeVar=StringVar()
+
+def additemwindow():
+    remove_all_widgets()
+    mainheading()
+    itemnameLabel = Label(taz, text="ITEM DETAILS", font="Arial 30")
+    itemnameLabel.grid(row=1, column=1, padx=(50, 0), columnspan=2, pady=10)
+
+    ###############################
+    billButton = Button(taz, text="Back", width=20, height=2, fg="green", bd=10, command=backbutton)
+    billButton.grid(row=1, column=0, columnspan=1)
+
+    logoutButton = Button(taz, text="Logout", width=20, height=2, fg="green", bd=10, command=logout)
+    logoutButton.grid(row=1, column=3, columnspan=1)
+
+    ###########################
+
+    itemnameLabel = Label(taz, text="Item name")
+    itemnameLabel.grid(row=2, column=1, padx=20, pady=5)
+
+    itemrateLabel = Label(taz, text="Item Rate")
+    itemrateLabel.grid(row=3, column=1, padx=20, pady=5)
+
+    itemTypeLabel = Label(taz, text="Item Type")
+    itemTypeLabel.grid(row=4, column=1, padx=20, pady=5)
+
+    itemnameEntry = Entry(taz, textvariable=itemnameVar)
+    itemnameEntry.grid(row=2, column=2, padx=5, pady=5)
+    itemnameEntry.configure(validate="key", validatecommand=(callback, "%P"))  # enables validation
+
+    itemrateEntry = Entry(taz, textvariable=itemrateVar)
+    itemrateEntry.grid(row=3, column=2, padx=5, pady=5)
+    itemrateEntry.configure(validate="key", validatecommand=(callback1, "%P"))  # enables validation
+
+    itemTypeEntry = Entry(taz, textvariable=itemTypeVar)
+    itemTypeEntry.grid(row=4, column=2, padx=5, pady=5)
+    itemTypeEntry.configure(validate="key", validatecommand=(callback, "%P"))  # enables validation
+
+    additemButton = Button(taz, text="Add Item", width=20, height=2, fg="green", bd=10, command=additem)
+    additemButton.grid(row=5, column=2, columnspan=1)
 #########################remove all widgets from screen #################
 
 def remove_all_widgets():
@@ -32,6 +100,11 @@ def mainheading():
                   font=("Comic Sans Ms", 40, "bold"), padx=0, pady=0)
     label.grid(row=0, columnspan=4)
 ##############################################
+############# def logout ########################
+def logout():
+    remove_all_widgets()
+    mainheading()
+    loginwindow()
 ############### database conncetion #########################
 def dbconfig():
     global mycursor,conn
@@ -42,8 +115,19 @@ def dbconfig():
 def welcomewindow():
     remove_all_widgets()
     mainheading()
-    loginButton = Button(taz, text="logout", width=20, height=2, fg="green", bd=10, command=adminlogin)
-    loginButton.grid(row=6, column=1, columnspan=2)
+    welcomeLabel = Label(taz, text="Welcome User", font="Arial 30")
+    welcomeLabel.grid(row=1, column=1, padx=(50, 0), columnspan=2, pady=10)
+
+    additemButton = Button(taz, text="Manage Restaurant", width=20, height=2, fg="green", bd=10, command=additemwindow)
+    additemButton.grid(row=3, column=0, columnspan=1)
+
+    billButton = Button(taz, text="Bill Generation", width=20, height=2, fg="green", bd=10,
+                        command=billgenerationwindow)
+    billButton.grid(row=3, column=1, columnspan=2)
+
+    logoutButton = Button(taz, text="Logout", width=20, height=2, fg="green", bd=10, command=logout)
+    logoutButton.grid(row=3, column=3, columnspan=1)
+
 
 ############### admin Login ###################
 def adminlogin():
