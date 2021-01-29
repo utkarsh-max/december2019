@@ -30,7 +30,7 @@ def openfile():
         my_entry1.insert(INSERT, data)
     print(result)
 root=Tk()
-root.wm_iconbitmap("note.ico")   #to add icon
+#root.wm_iconbitmap("note.ico")   #to add icon
 
 my_entry1 = Text(root,selectbackground='green',wrap=WORD,insertwidth=1)  # creates an entry
 my_entry1.insert(INSERT,"Hello how r U?")

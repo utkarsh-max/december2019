@@ -7,7 +7,6 @@ window.title("My Turtle")
 t.shape("turtle")
 t.color("green","yellow")
 t.pensize(5)
-t.speed(1)
 t.hideturtle()
 l=["red","blue","green","orange","grey"]
 for i in range(5):
